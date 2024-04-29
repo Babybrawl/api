@@ -4,10 +4,27 @@ const axios = require('axios');
 
 const app = express();
 const port = 3000;
-const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImVhYjViZTFiLTUzMjEtNDM3Zi1hZDdjLWExYWIyNDhkZmQzNyIsImlhdCI6MTcwMjU3NDg5NCwic3ViIjoiZGV2ZWxvcGVyL2NkZDVlY2FkLTkxZmUtZWI1Mi0zZGM5LWEyNzZiYWNmMjFjNCIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiODguMTI1LjE0MC4xNDIiXSwidHlwZSI6ImNsaWVudCJ9XX0.JzEC187VmUsbG7pIqvmpxGMaSgkAncq0-on6HxkO2YgHYPHHAxOtaxG36p8l7gdPV7XJFxYU20xFw551sJnawA'; // Remplacez par votre clé d'API Brawl Stars
+const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImVhYjViZTFiLTUzMjEtNDM3Zi1hZDdjLWExYWIyNDhkZmQzNyIsImlhdCI6MTcwMjU3NDg5NCwic3ViIjoiZGV2ZWxvcGVyL2NkZDVlY2FkLTkxZmUtZWI1Mi0zZGM5LWEyNzZiYWNmMjFjNCIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiODguMTI1LjE0MC4xNDIiXSwidHlwZSI6ImNsaWVudCJ9XX0.JzEC187VmUsbG7pIqvmpxGMaSgkAncq0-on6HxkO2YgHYPHHAxOtaxG36p8l7gdPV7XJFxYU20xFw551sJnawA';
 
-app.use(cors()); // Autoriser toutes les origines pour les requêtes CORS
+app.use(cors());
 
+// Endpoint pour rediriger les requêtes vers l'API distante
+app.get('/api/:path', async (req, res) => {
+    const path = req.params.path;
+    const url = `https://api.brawlstars.com/v1/${path}`;
+    const headers = {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+    };
+
+    try {
+        const response = await axios.get(url, { headers });
+        res.json(response.data);
+    } catch (error) {
+        console.error('Erreur:', error.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
 app.get('/:playerTag', async (req, res) => {
     const playerTag = req.params.playerTag;
 
@@ -108,5 +125,6 @@ app.listen(port, () => {
 });
 
     app.use((req, res) => {
-        res.json({message : "l'api MARCHE ALALALA !"});
+        res.json({message : "l'api est ok !"});
+        res.json({message : "l'api est pas ok !"});
     });
