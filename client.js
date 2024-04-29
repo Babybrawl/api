@@ -108,5 +108,5 @@ app.listen(port, () => {
 });
 
     app.use((req, res) => {
-        res.json({message : "l'api est ok !"});
+        res.json({message : "l'api est pas ok !"});
     });
