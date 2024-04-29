@@ -1,0 +1,144 @@
+#block{
+    background-color: aqua;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-top: 20px;
+    width: 150px;
+    height: 150px;
+    background-image: url(image/shelly.png);
+    background-size: 150px 150px;
+}
+#BrawlerDiv{
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+#text{
+    width: 150px;
+    height: 150px;
+    font-family:'Impact', fantasy;
+    color: white;
+    font-size: 25px;
+    margin-top: 0px;
+    margin-bottom: 0;
+    margin-left: 4px;
+    text-shadow: 0 0 3px black, 0 0 5px black;
+}
+#text2{
+    width: 150px;
+    height: 150px;
+    font-family:'Impact', fantasy;
+    color: white;
+    font-size: 25px;
+    margin-top: -30px;
+    margin-left: 4px;
+    text-shadow: 0 0 3px black, 0 0 5px black;
+}
+#text3{
+    width: 150px;
+    height: 150px;
+    font-family:'Impact', fantasy;
+    color: white;
+    font-size: 25px;
+    margin-top: -30px;
+    margin-left: 5px;
+    text-shadow: 0 0 3px black, 0 0 5px black;
+}
+#Tbling{
+    font-size: 50px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+#container {
+    max-width: 800px;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 600px;
+    height: 300px;
+}
+
+#header {
+    background-color: #ff9f00;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+#header img {
+    max-width: 100px;
+    height: 100px;
+    width: 100px;
+    margin-left: 0;
+    margin-right: auto;
+}
+
+#header p {
+    margin: 10px 0;
+    font-size: 35px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#lala {
+    background-image: url('https://cdn-old.brawlify.com/gamemode/header/Wipeout.png');
+    background-size: cover;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+
+#lala p {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 35px;
+    color: #fff;
+    text-shadow: 0 0 12px black, 0 0 20px black;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+#lala div p {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 35px;
+    color: #fff;
+    text-shadow: 0 0 12px black, 0 0 20px black;
+}
+
+#lala div img {
+    width: 40px;
+    height: 40px;
+    margin-right: 0;
+}
+
+#lala div {
+    display: flex;
+    align-items: center; /* Aligner verticalement les éléments enfants */
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+#lala div #tr{
+    background-color: transparent;
+    margin-right: 5px;
+}
+
+.CombatContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 50px;
+}
+
+.CombatContainer > div {
+    margin: 10px;
+    flex: 0 0 auto;
+}

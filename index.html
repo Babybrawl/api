@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="style.css" rel="stylesheet" />
+    <title>Player Info</title>
+</head>
+<body>
+    <input type="text" id="input">
+    <button onclick="searchAndUpdate()">search</button>
+    <h1>Player Info</h1>
+    <button onclick="fetchPlayerInfoCalculate()">calculate fin de saison</button>
+    <div id="playerInfo"></div>
+    <div id="historiqueCombat" class="CombatContainer"></div>
+    <div id="container">
+        <div id="header">
+            <img src="https://cdn-old.brawlify.com/gamemode/Knockout.png" alt="Knockout">
+            <p>Hors jeux</p>
+            <p>crispy map</p>
+        </div>
+        <div id="lala">
+            <p>Victories</p>
+            <div>
+                <p id="tr">+8</p>
+                <img src="https://cdn-old.brawlify.com/icon/trophy.png">
+            </div>
+            <p>Brawler : Pam</p>
+        </div>
+    </div>
+
+    <script>
+        async function fetchPlayerInfo(playerTag) {
+            localStorage.setItem("Player", playerTag);
+            if(playerTag == 'input'){
+                playerTag = document.getElementById("input").value
+                localStorage.setItem("Player", playerTag);
+            }
+            try {
+                const response = await fetch(`http://localhost:3000/${playerTag}`);
+                const playerData = await response.json();
+
+                if (playerData) {
+                    const playerInfoElement = document.getElementById('playerInfo');
+                    const brawlersList = playerData.brawlers.map(brawler => `<li>${brawler.name}</li>`).join('');
+                    playerInfoElement.innerHTML = `
+                        <p>Player Name: ${playerData.name}</p>
+                        <p>Trophies: ${playerData.trophies}</p>
+                        <p>Highest Trophies: ${playerData.highestTrophies}</p>
+                        <p>3vs3 Victories: ${playerData['3vs3Victories']}</p>
+                        <p>Solo Victories: ${playerData.soloVictories}</p>
+                        <p>Duo Victories: ${playerData.duoVictories}</p>
+                        <p>Club: <a href="#" onclick="fetchClubDetails('${playerData.club.tag}')">${playerData.club.name}</a></p>
+                    `;
+                    const BrawlerDiv = document.createElement('div');
+                    BrawlerDiv.id = "BrawlerDiv";
+                    for (const brawler of playerData.brawlers) {
+                        // Créer un nouvel élément <div> pour chaque brawler
+                            const block = document.createElement("div");
+                        block.id = `block`;
+                        const imageName = brawler.name.toLowerCase().replace(' ', ''); // Nom de l'image basé sur le nom du brawler
+                        const imagePath = `image/${imageName}.png`; // Chemin de l'image
+
+                        // Appliquer l'image de fond au bloc <div>
+                        block.style.backgroundImage = `url('${imagePath}')`;
+
+                        // Créer un paragraphe <p> pour afficher les informations du brawler
+                        const brawlerParagraph = document.createElement('p');
+                        brawlerParagraph.id = "text";
+                        const brawlerInfoText = document.createTextNode(`${brawler.name}`);
+                        const brawlerParagraph2 = document.createElement('p');
+                        brawlerParagraph2.id = "text2";
+                        const brawlerInfoText2 = document.createTextNode(`Trophies: ${brawler.trophies}`);
+
+                        brawlerParagraph.appendChild(brawlerInfoText);
+                        brawlerParagraph2.appendChild(brawlerInfoText2);
+                        block.appendChild(brawlerParagraph);
+                        block.appendChild(brawlerParagraph2);
+                        playerInfoElement.appendChild(block);
+                        BrawlerDiv.appendChild(block);
+                    }
+                    playerInfoElement.appendChild(BrawlerDiv);
+
+                } else {
+                    console.error('Player data not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching player data:', error.message);
+            }
+        }
+
+        async function fetchClubDetails(clubTag) {
+            var clubTag2 = clubTag.substring(1);
+
+            try {
+                const response = await fetch(`http://localhost:3000/clubs/${clubTag2}`);
+                const clubData = await response.json();
+
+                if (clubData) {
+                    document.getElementById("playerInfo").innerHTML = `
+                        <h2>Club Info</h2>
+                        <p>Club Name: ${clubData.name}</p>
+                        <p>Club Tag: ${clubData.tag}</p>
+                        <p>Description: ${clubData.description}</p>
+                        <p>Type: ${clubData.type}</p>
+                        <p>Required Trophies: ${clubData.requiredTrophies}</p>
+                        <p>Total Trophies: ${clubData.trophies}</p>
+                        <h3>Members:</h3>
+                        <ul>
+                            ${clubData.members.map(member => `
+                                <li>
+                                    <a onclick="fetchPlayerInfo('${member.tag.substring(1)}')" href="#"><strong>${member.name}</strong></a> (${member.tag})
+                                    - Trophies: ${member.trophies}
+                                </li>
+                            `).join('')}
+                        </ul>
+                        `;
+                } else {
+                    alert('Club data not found.');
+                }
+            } catch (error) {
+                alert('Error fetching club data:', error.message);
+            }
+        }
+
+        function calculate(trophies){
+            let bling = 0;
+            let futurTrophies = 500;
+            if(trophies >= 501 && trophies <= 524){
+                bling = 4;
+                futurTrophies = 500;
+            }else if(trophies >= 524 && trophies <= 549){
+                bling = 6;
+                futurTrophies = 524;
+            }else if(trophies >= 550 && trophies <= 574){
+                bling = 8;
+                futurTrophiess = 549;
+            }else if(trophies >= 575 && trophies <= 599){
+                bling = 10;
+                futurTrophies = 574;
+            }else if(trophies >= 600 && trophies <= 624){
+                bling = 12;
+                futurTrophies = 599;
+            }else if(trophies >= 625 && trophies <= 649){
+                bling = 14;
+                futurTrophies = 624;
+            }else if(trophies >= 650 && trophies <= 674){
+                bling = 16;
+                futurTrophies = 649;
+            }
+            return bling;
+        }
+
+        async function fetchPlayerInfoCalculate() {
+            var playerTag = localStorage.getItem("Player");
+            if(playerTag == 'input'){
+                playerTag = document.getElementById("input").value
+            }
+            try {
+                const response = await fetch(`http://localhost:3000/${playerTag}`);
+                const playerData = await response.json();
+
+                if (playerData) {
+                    const playerInfoElement = document.getElementById('playerInfo');
+                    const brawlersList = playerData.brawlers.map(brawler => `<li>${brawler.name}</li>`).join('');
+                    playerInfoElement.innerHTML = `
+                        <p>Player Name: ${playerData.name}</p>
+                        <p>Trophies: ${playerData.trophies}</p>
+                        <p>Highest Trophies: ${playerData.highestTrophies}</p>
+                        <p>3vs3 Victories: ${playerData['3vs3Victories']}</p>
+                        <p>Solo Victories: ${playerData.soloVictories}</p>
+                        <p>Duo Victories: ${playerData.duoVictories}</p>
+                        <p>Club: <a href="#" onclick="fetchClubDetails('${playerData.club.tag}')">${playerData.club.name}</a></p>
+                    `;
+                    let TotalBling = 0;
+                    const BrawlerDiv = document.createElement('div');
+                    BrawlerDiv.id = "BrawlerDiv";
+                    const Tbling = document.createElement('div');
+                    Tbling.id = "Tbling";
+                    playerInfoElement.appendChild(Tbling);
+                    for (const brawler of playerData.brawlers) {
+                        const bling = await calculate(brawler.trophies);
+                        TotalBling += bling;
+
+                        // Créer un nouvel élément <div> pour chaque brawler
+                            const block = document.createElement("div");
+                        block.id = `block`;
+                        const imageName = brawler.name.toLowerCase().replace(' ', ''); // Nom de l'image basé sur le nom du brawler
+                        const imagePath = `image/${imageName}.png`; // Chemin de l'image
+
+                        // Appliquer l'image de fond au bloc <div>
+                        block.style.backgroundImage = `url('${imagePath}')`;
+
+                        // Créer un paragraphe <p> pour afficher les informations du brawler
+                        const brawlerParagraph = document.createElement('p');
+                        brawlerParagraph.id = "text";
+                        const brawlerInfoText = document.createTextNode(`${brawler.name}`);
+                        const brawlerParagraph2 = document.createElement('p');
+                        brawlerParagraph2.id = "text2";
+                        brawlerParagraph2.style.marginTop = "-55px";
+                        const brawlerInfoText2 = document.createTextNode(`Trophies: ${brawler.trophies}`);
+                        const brawlerParagraph3 = document.createElement('p');
+                        brawlerParagraph3.id = "text3";
+                        brawlerParagraph3.style.marginTop = "-150px";
+                        const brawlerInfoText3 = document.createTextNode(`Blings: ${bling}`);
+
+                        brawlerParagraph.appendChild(brawlerInfoText);
+                        brawlerParagraph2.appendChild(brawlerInfoText2);
+                        brawlerParagraph3.appendChild(brawlerInfoText3);
+                        block.appendChild(brawlerParagraph);
+                        block.appendChild(brawlerParagraph2);
+                        block.appendChild(brawlerParagraph3);
+                        playerInfoElement.appendChild(block);
+                        BrawlerDiv.appendChild(block);
+                    }
+                    playerInfoElement.appendChild(BrawlerDiv);
+                    document.getElementById("Tbling").innerHTML = `Total blings: ${TotalBling}`;
+                } else {
+                    console.error('Player data not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching player data:', error.message);
+            }
+        }
+
+        async function afficherHistoriqueCombat(playerTag) {
+    try {
+        const reponse = await fetch(`http://localhost:3000/joueur/${playerTag}`);
+        const historiqueCombat = await reponse.json();
+
+        const historiqueCombatElement = document.getElementById('historiqueCombat');
+        historiqueCombatElement.innerHTML = ''; // Efface le contenu précédent
+
+        historiqueCombat.items.forEach(async item => {
+            const event = item.event;
+            const battle = item.battle;
+            const modeImages = await getImage(battle.mode);
+            
+            // Recherche du joueur correspondant au starPlayer
+            const PlayerTag = localStorage.getItem("Player");
+            let playerBrawlerName = '';
+
+            // Vérifie si battle.teams est défini et est un tableau
+            for (let key in battle.teams) {
+                const team = battle.teams[key];
+                for(let ko in team){
+                    const teamBrawler = team[ko].brawler;
+                    const teamTag = team[ko].tag.substring(1,9);
+                    if(teamTag == playerTag){
+                        playerBrawlerName = teamBrawler.name;
+                        console.log(teamBrawler.name);
+                    }
+                }
+            }
+            // Créez ici votre propre structure HTML pour afficher les détails du combat
+            const containerHTML = `
+                <div id="container">
+                    <div id="header" style="background-color: ${modeImages[2]};"">
+                        <img src="${modeImages[0]}" alt="${battle.mode}">
+                        <p>${battle.mode}</p>
+                        <p>${event.map}</p>
+                    </div>
+                    <div id="lala" style="background-image: url('${modeImages[1]}');">
+                        <p>${battle.result}</p>
+                        <div>
+                            <p id="tr">${battle.trophyChange >= 0 ? '+' : ''}${battle.trophyChange > 0 ? '' : ''}${battle.trophyChange}</p>
+                            <img src="https://cdn-old.brawlify.com/icon/trophy.png">
+                        </div>
+                        <p>${playerBrawlerName}</p>
+                    </div>
+                </div>
+            `;
+
+            historiqueCombatElement.insertAdjacentHTML('beforeend', containerHTML);
+        });
+    } catch (erreur) {
+        console.error('Erreur lors de la récupération de lhistorique des combats:', erreur.message);
+    }
+}
+
+
+function getImage(mode){
+    let img1 = "https://cdn-old.brawlify.com/gamemode/Knockout.png";
+    let img2 = "https\:\/\/cdn-old\.brawlify\.com\/gamemode\/header\/Knockout\.png";
+    let color = "#ff9f00";
+
+    if(mode == "knockout"){
+        img1 = "https://cdn-old.brawlify.com/gamemode/Knockout.png";
+        img2 = "https\:\/\/cdn-old\.brawlify\.com\/gamemode\/header\/Wipeout\.png";
+        color = "#ff9f00";
+    }
+    if(mode == "gemGrab"){
+        img1 = "https://cdn-old.brawlify.com/gamemode/Gem-Grab.png";
+        img2 = "https\:\/\/cdn-old\.brawlify\.com\/gamemode\/header\/Knockout\.png";
+        color = "#9A3DF3";
+    }
+    if(mode == "brawlBall"){
+        img1 = "https://cdn-old.brawlify.com/gamemode/Brawl-Ball.png";
+        img2 = "https\:\/\/cdn-old\.brawlify\.com\/gamemode\/header\/Brawl-Ball\.png";
+        color = "#8CA0E0";
+    }
+
+    return [img1, img2, color];
+}
+
+
+function searchAndUpdate() {
+    fetchPlayerInfo('input'); // Appeler la première fonction
+    afficherHistoriqueCombat(localStorage.getItem("Player")); // Appeler une autre fonction si nécessaire
+}
+
+        // Exemple d'utilisation
+        afficherHistoriqueCombat(localStorage.getItem("Player"));
+
+
+        // Exemple d'utilisation
+        fetchPlayerInfo(localStorage.getItem("Player"));
+        //fetchPlayerInfo("88ULU8C8U");
+    </script>
+</body>
+</html>
