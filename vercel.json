@@ -1,7 +1,5 @@
 {
-    "version" : 2,
-    "name" : "api",
-    "builds":[
-        {"src": "client.js", "use": "@vercel/node"}
+    "rewrite": [
+        {"source": "/(.*)", "DESTINATION": "/"}
     ]
 }
