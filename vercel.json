@@ -3,8 +3,5 @@
     "name" : "api",
     "builds":[
         {"src": "client.js", "use": "@vercel/node"}
-    ],
-    "routes":[
-        {"src": "/(.*)", "use": "/client.js"}
     ]
 }
