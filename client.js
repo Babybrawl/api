@@ -106,3 +106,7 @@ async function getClubInfo(clubTag, apiKey) {
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
+
+    app.use((req, res) => {
+        res.json({message : "l'api est ok !"});
+    });
