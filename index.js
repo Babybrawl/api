@@ -9,12 +9,15 @@ const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAt
 // Configuration du CORS pour autoriser les requêtes provenant de votre domaine local
 app.use(cors({ origin: 'http://localhost:3000' }));
 
-// Vos autres middlewares et routes
-
-app.listen(port, () => {
-    console.log(`Serveur en cours d'écoute sur le port ${port}`);
+// Middleware pour ajouter les en-têtes CORS à toutes les réponses
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
 });
 
+// Route pour récupérer les informations d'un joueur
 app.get('/:playerTag', async (req, res) => {
     const playerTag = req.params.playerTag;
 
@@ -22,11 +25,12 @@ app.get('/:playerTag', async (req, res) => {
         const playerData = await getPlayerInfo(playerTag, apiKey);
         res.json(playerData);
     } catch (error) {
-        console.error('Error:', error.message);
-        res.status(500).send('Internal Server Error');
+        console.error('Erreur:', error.message);
+        res.status(500).send('Erreur Interne du Serveur');
     }
 });
 
+// Route pour récupérer les informations d'un club
 app.get('/clubs/:clubTag', async (req, res) => {
     const clubTag = req.params.clubTag;
     
@@ -34,11 +38,12 @@ app.get('/clubs/:clubTag', async (req, res) => {
         const clubData = await getClubInfo(clubTag, apiKey);
         res.json(clubData);
     } catch (error) {
-        console.error('Error fetching club data:', error.message);
-        res.status(500).send('Internal Server Error');
+        console.error('Erreur lors de la récupération des informations du club:', error.message);
+        res.status(500).send('Erreur Interne du Serveur');
     }
 });
 
+// Route pour récupérer l'historique des combats d'un joueur
 app.get('/joueur/:playerTag', async (req, res) => {
     const playerTag = req.params.playerTag;
     try {
@@ -50,28 +55,7 @@ app.get('/joueur/:playerTag', async (req, res) => {
     }
 });
 
-
-async function recupererHistoriqueCombatJoueur(playerTag, apiKey) {
-    const url = `https://api.brawlstars.com/v1/players/%23${playerTag}/battlelog`;
-    const headers = {
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-    };
-
-    try {
-        const reponse = await axios.get(url, { headers });
-
-        if (reponse.status === 200) {
-            return reponse.data;
-        } else {
-            throw new Error(`Erreur API: ${reponse.status} - ${reponse.statusText}`);
-        }
-    } catch (erreur) {
-        throw new Error(`Erreur lors de la de l'historique des combats: ${erreur.message}`);
-    }
-}
-
-
+// Fonction pour récupérer les informations d'un joueur
 async function getPlayerInfo(playerTag, apiKey) {
     const url = `https://api.brawlstars.com/v1/players/%23${playerTag}`;
     const headers = {
@@ -84,30 +68,50 @@ async function getPlayerInfo(playerTag, apiKey) {
     if (response.status === 200) {
         return response.data;
     } else {
-        throw new Error(`API Error: ${response.status} - ${response.statusText}`);
+        throw new Error(`Erreur API: ${response.status} - ${response.statusText}`);
     }
 }
 
+// Fonction pour récupérer les informations d'un club
 async function getClubInfo(clubTag, apiKey) {
-    const url = `https://api.brawlstars.com/v1/clubs/%23${clubTag}`; // Utilisation correcte du clubTag dans l'URL
+    const url = `https://api.brawlstars.com/v1/clubs/%23${clubTag}`;
     const headers = {
         'Accept': 'application/json',
         'Authorization': `Bearer ${apiKey}`
     };
 
-    try {
-        const response = await axios.get(url, { headers });
+    const response = await axios.get(url, { headers });
 
-        if (response.status === 200) {
-            return response.data;
-        } else {
-            throw new Error(`API Error: ${response.status} - ${response.statusText}`);
-        }
-    } catch (error) {
-        throw new Error(`Error fetching club data: ${error.message}`);
+    if (response.status === 200) {
+        return response.data;
+    } else {
+        throw new Error(`Erreur API: ${response.status} - ${response.statusText}`);
     }
 }
 
+// Fonction pour récupérer l'historique des combats d'un joueur
+async function recupererHistoriqueCombatJoueur(playerTag, apiKey) {
+    const url = `https://api.brawlstars.com/v1/players/%23${playerTag}/battlelog`;
+    const headers = {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+    };
+
+    const response = await axios.get(url, { headers });
+
+    if (response.status === 200) {
+        return response.data;
+    } else {
+        throw new Error(`Erreur API: ${response.status} - ${response.statusText}`);
+    }
+}
+
+// Middleware pour gérer les routes non trouvées
 app.use((req, res) => {
-    res.json({message: "L'API fonctionne correctement !"});
+    res.status(404).send('Page Non Trouvée');
+});
+
+// Démarrer le serveur
+app.listen(port, () => {
+    console.log(`Serveur en cours d'écoute sur le port ${port}`);
 });
