@@ -11,6 +11,7 @@ app.use(cors({ origin: 'http://localhost:3000' }));
 
 // Middleware pour ajouter les en-têtes CORS à toutes les réponses
 app.use((req, res, next) => {
+    console.log('Requête reçue :', req.method, req.url);
     res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -20,12 +21,13 @@ app.use((req, res, next) => {
 // Route pour récupérer les informations d'un joueur
 app.get('/:playerTag', async (req, res) => {
     const playerTag = req.params.playerTag;
-
+    console.log(`Route atteinte : /${playerTag}`);
     try {
         const playerData = await getPlayerInfo(playerTag, apiKey);
+        console.log('Données du joueur récupérées avec succès :', playerData);
         res.json(playerData);
     } catch (error) {
-        console.error('Erreur:', error.message);
+        console.error('Erreur lors de la récupération des données du joueur :', error.message);
         res.status(500).send('Erreur Interne du Serveur');
     }
 });
