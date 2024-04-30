@@ -8,15 +8,6 @@ const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAt
 
 app.use(cors({ origin: 'http://localhost' }));
 
-// Endpoint pour rediriger les requêtes vers l'API distante
-app.get('/api/:path', async (req, res) => {
-    const path = req.params.path;
-    const url = `https://api.brawlstars.com/v1/${path}`;
-    const headers = {
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-    };
-
     try {
         const response = await axios.get(url, { headers });
         res.json(response.data);
