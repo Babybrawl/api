@@ -8,14 +8,6 @@ const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAt
 
 app.use(cors({ origin: 'http://localhost' }));
 
-// Middleware pour ajouter les en-têtes CORS à toutes les réponses
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-});
-
 // Endpoint pour rediriger les requêtes vers l'API distante
 app.get('/api/:path', async (req, res) => {
     const path = req.params.path;
