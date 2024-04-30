@@ -9,7 +9,7 @@ const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAt
 // Configuration du CORS pour autoriser les requêtes provenant de votre domaine local
 app.use(cors({ origin: 'http://localhost:3000' }));
 
-Access-Control-Allow-Origin: http://localhost
+Access-Control-Allow-Origin: 'http://localhost:3000'
 // Vos autres middlewares et routes
 
 app.listen(port, () => {
