@@ -8,14 +8,6 @@ const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAt
 
 app.use(cors({ origin: 'http://localhost' }));
 
-    try {
-        const response = await axios.get(url, { headers });
-        res.json(response.data);
-    } catch (error) {
-        console.error('Erreur:', error.message);
-        res.status(500).send('Internal Server Error');
-    }
-});
 app.get('/:playerTag', async (req, res) => {
     const playerTag = req.params.playerTag;
 
