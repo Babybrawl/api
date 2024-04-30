@@ -6,7 +6,7 @@ const app = express();
 const port = 3000;
 const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImVhYjViZTFiLTUzMjEtNDM3Zi1hZDdjLWExYWIyNDhkZmQzNyIsImlhdCI6MTcwMjU3NDg5NCwic3ViIjoiZGV2ZWxvcGVyL2NkZDVlY2FkLTkxZmUtZWI1Mi0zZGM5LWEyNzZiYWNmMjFjNCIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiODguMTI1LjE0MC4xNDIiXSwidHlwZSI6ImNsaWVudCJ9XX0.JzEC187VmUsbG7pIqvmpxGMaSgkAncq0-on6HxkO2YgHYPHHAxOtaxG36p8l7gdPV7XJFxYU20xFw551sJnawA';
 
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: 'http://localhost' }));
 
 // Middleware pour ajouter les en-têtes CORS à toutes les réponses
 app.use((req, res, next) => {
