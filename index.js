@@ -60,17 +60,18 @@ app.get('/joueur/:playerTag', async (req, res) => {
 // Fonction pour récupérer les informations d'un joueur
 async function getPlayerInfo(playerTag, apiKey) {
     const url = `https://api.brawlstars.com/v1/players/%23${playerTag}`;
+    console.log('Envoi de la requête vers l\'API Brawl Stars :', url);
     const headers = {
         'Accept': 'application/json',
         'Authorization': `Bearer ${apiKey}`
     };
-
-    const response = await axios.get(url, { headers });
-
-    if (response.status === 200) {
+    try {
+        const response = await axios.get(url, { headers });
+        console.log('Réponse de l\'API Brawl Stars reçue avec succès :', response.data);
         return response.data;
-    } else {
-        throw new Error(`Erreur API: ${response.status} - ${response.statusText}`);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données depuis l\'API Brawl Stars :', error.message);
+        throw error;
     }
 }
 
