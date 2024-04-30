@@ -107,7 +107,6 @@ app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
 
-    app.use((req, res) => {
-        res.json({message : "l'api est ok !"});
-        res.json({message : "l'api est pas ok !"});
-    });
+app.use((req, res) => {
+    res.json({message: "L'API fonctionne correctement !"});
+});
