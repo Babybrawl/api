@@ -4,9 +4,16 @@ const axios = require('axios');
 
 const app = express();
 const port = 3000;
-const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImVhYjViZTFiLTUzMjEtNDM3Zi1hZDdjLWExYWIyNDhkZmQzNyIsImlhdCI6MTcwMjU3NDg5NCwic3ViIjoiZGV2ZWxvcGVyL2NkZDVlY2FkLTkxZmUtZWI1Mi0zZGM5LWEyNzZiYWNmMjFjNCIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiODguMTI1LjE0MC4xNDIiXSwidHlwZSI6ImNsaWVudCJ9XX0.JzEC187VmUsbG7pIqvmpxGMaSgkAncq0-on6HxkO2YgHYPHHAxOtaxG36p8l7gdPV7XJFxYU20xFw551sJnawA';
+const apiKey = 'YOUR_API_KEY_HERE';
 
-app.use(cors());
+// Configuration du CORS pour autoriser les requêtes provenant de votre domaine local
+app.use(cors({ origin: 'http://localhost' }));
+
+// Vos autres middlewares et routes
+
+app.listen(port, () => {
+    console.log(`Serveur en cours d'écoute sur le port ${port}`);
+});
 
 app.get('/:playerTag', async (req, res) => {
     const playerTag = req.params.playerTag;
@@ -100,12 +107,6 @@ async function getClubInfo(clubTag, apiKey) {
         throw new Error(`Error fetching club data: ${error.message}`);
     }
 }
-
-
-
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-});
 
 app.use((req, res) => {
     res.json({message: "L'API fonctionne correctement !"});
